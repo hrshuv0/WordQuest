@@ -12,7 +12,12 @@ public static class ApplicationServiceExtensions
         
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseMySQL(connectionString);
+            options.UseMySQL(connectionString, conn => 
+                conn.EnableRetryOnFailure(
+                    maxRetryCount:5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: null
+                ));
         });
 
         #endregion
@@ -24,7 +29,7 @@ public static class ApplicationServiceExtensions
             // Migrate and Seed Data
             
             var context = services.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
-            //await context.Database.MigrateAsync();
+            await context.Database.MigrateAsync();
 
             //await AppDbInitializer.SeedAsync(context, loggerFactory);
         }

@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Config\" />
       <Folder Include="Data\SeedData\" />
       <Folder Include="Repositories\" />
       <Folder Include="Services\" />
@@ -16,6 +15,11 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
+      <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
 </Project>
