@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Areas.Admin.Controllers;
 
@@ -9,5 +10,12 @@ public class VocabularyController : Controller
     public IActionResult Index()
     {
         return View();
+    }
+
+    public IActionResult CreateEdit()
+    {
+        Word model = new();
+
+        return View(model);
     }
 }

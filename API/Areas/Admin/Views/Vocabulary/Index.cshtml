@@ -20,7 +20,14 @@
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Vocabs</h5>
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>Vocabs</h5>
+            <a asp-area="Admin" asp-controller="Vocabulary" asp-action="CreateEdit" type="button" class="btn btn-sm btn-outline-success">
+              <i class="bi bi-plus-lg"></i> Add New
+            </a>
+          </div>
+          
+
           <p>...</p>
 
           <table class="table datatable">
@@ -48,10 +55,10 @@
               <td>35</td>
               <td>2014-12-05</td>
             </tr>
-            
+
             </tbody>
-            
-            
+
+
           </table>
 
 
