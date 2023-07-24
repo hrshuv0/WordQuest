@@ -18,4 +18,11 @@ public class VocabularyController : Controller
 
         return View(model);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateEdit(Word model)
+    {
+        return View(model);
+    }
 }
