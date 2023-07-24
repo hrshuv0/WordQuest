@@ -2,7 +2,7 @@
 
 namespace Core.Repositories;
 
-public interface IVocabularyRepository : IBaseRepository<Word, Guid>
+public interface IVocabularyRepository : IBaseRepository<Word, long>
 {
     
 }

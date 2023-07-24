@@ -4,7 +4,7 @@ using Core.Services;
 
 namespace Infrastructure.Services;
 
-public class VocabularyService : BaseService<Word, Guid>, IVocabularyService
+public class VocabularyService : BaseService<Word, long>, IVocabularyService
 {
     #region CONFIG
     

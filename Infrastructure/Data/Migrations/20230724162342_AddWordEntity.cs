@@ -60,7 +60,8 @@ namespace Infrastructure.Data.Migrations
                 name: "Word",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),

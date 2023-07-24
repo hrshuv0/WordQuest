@@ -4,7 +4,7 @@ using Infrastructure.Data;
 
 namespace Infrastructure.Repositories;
 
-public class VocabularyRepository : BaseRepository<Word, Guid>,  IVocabularyRepository
+public class VocabularyRepository : BaseRepository<Word, long>,  IVocabularyRepository
 {
     public VocabularyRepository(ApplicationDbContext dbContext) : base(dbContext)
     {

@@ -28,8 +28,8 @@ public static class ApplicationServiceExtensions
         {
             // Migrate and Seed Data
             
-            var context = services.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
-            await context.Database.MigrateAsync();
+            //var context = services.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
+            //await context.Database.MigrateAsync();
 
             //await AppDbInitializer.SeedAsync(context, loggerFactory);
         }

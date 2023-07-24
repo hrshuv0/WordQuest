@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230723172345_AddWordEntity")]
+    [Migration("20230724162342_AddWordEntity")]
     partial class AddWordEntity
     {
         /// <inheritdoc />
@@ -24,9 +24,9 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Word", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime(6)");
