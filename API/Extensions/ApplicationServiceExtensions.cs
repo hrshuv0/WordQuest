@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data;
+﻿using Core.Interfaces;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
@@ -21,6 +22,8 @@ public static class ApplicationServiceExtensions
         });
 
         #endregion
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
 
@@ -28,8 +31,8 @@ public static class ApplicationServiceExtensions
         {
             // Migrate and Seed Data
             
-            //var context = services.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
-            //await context.Database.MigrateAsync();
+            var context = services.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
+            await context.Database.MigrateAsync();
 
             //await AppDbInitializer.SeedAsync(context, loggerFactory);
         }

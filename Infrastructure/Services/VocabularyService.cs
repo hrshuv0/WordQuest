@@ -10,7 +10,7 @@ public class VocabularyService : BaseService<Word, long>, IVocabularyService
     
     private readonly IVocabularyRepository _entityRepository;
     
-    protected VocabularyService(IVocabularyRepository entityRepository) : base(entityRepository)
+    public VocabularyService(IVocabularyRepository entityRepository) : base(entityRepository)
     {
         _entityRepository = entityRepository;
     }
