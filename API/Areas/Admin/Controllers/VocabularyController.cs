@@ -1,19 +1,21 @@
-﻿using API.Helpers.Pagination;
+﻿using System.Linq.Expressions;
+using API.Controllers;
+using API.Helpers.Pagination;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Areas.Admin.Controllers;
 
-[Area("Admin")]
-public class VocabularyController : Controller
+public class VocabularyController : BaseMvcController
 {
     #region Init
 
     private readonly IUnitOfWork _unitOfWork;
 
-    public VocabularyController(IUnitOfWork unitOfWork)
+    public VocabularyController(ILoggerFactory factory,IUnitOfWork unitOfWork)
     {
+        _logger = factory.CreateLogger<VocabularyController>();
         _unitOfWork = unitOfWork;
     }
 
@@ -53,18 +55,27 @@ public class VocabularyController : Controller
 
     #region API Calls
 
-    [HttpPost]
-    public async Task<IActionResult> GetAll([FromQuery] PaginationParams pagination)
+    
+    public async Task<IActionResult> GetAll()
     {
         IList<Word> result = new List<Word>();
+
+        try
+        {
+            PaginationParams pagination = new(Request);
+            Expression<Func<Word, bool>> filter = null;
         
-        var total = 0;
-        var totalFiltered = 0;
-        var totalPages = 0;
+            if(string.IsNullOrWhiteSpace(pagination.SearchText) == false)
+                filter = word => word.Name.Contains(pagination.SearchText);
+        
+            (result, _, _, _) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, null, null, pagination.PageNumber,
+                pagination.PageSize, false);
+        }
+        catch (Exception e)
+        {
             
-        (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, null, null, null, pagination.PageNumber,
-            pagination.PageSize, false);
-        
+        }
+
         return Json(new {data = result});
     }
 

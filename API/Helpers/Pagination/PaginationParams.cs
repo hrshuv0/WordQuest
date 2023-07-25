@@ -2,14 +2,34 @@
 
 public class PaginationParams
 {
-    private const int MaxPageSize = 50;
+    private readonly HttpRequest _request;
+    private const int MaxPageSize = 100;
     
-    public int PageNumber { get; set; } = 1;
-    public int PageSize { get; set; } = 10;
-
-    public int Params
+    public PaginationParams(HttpRequest request)
     {
-        get => PageSize;
-        set => PageSize = value > MaxPageSize ? MaxPageSize : value;
+        _request = request;
     }
+    
+    private int Start => Convert.ToInt32(_request.Query["start"]);
+    private int Length => Convert.ToInt32(_request.Query["length"]);
+    public string SearchText => _request.Query["search[value]"]!;
+
+    public int PageNumber
+    {
+        get
+        {
+            if (Length > 0)
+                return (Start / Length) + 1;
+            return 1;
+        }
+    }
+
+    public int PageSize => Length == 0 ? 10 : Length > MaxPageSize ? MaxPageSize : Length;
+
+
+    // public int Params
+    // {
+    //     get => PageSize;
+    //     set => PageSize = value > MaxPageSize ? MaxPageSize : value;
+    // }
 }

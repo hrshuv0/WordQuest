@@ -1,5 +1,4 @@
-﻿
-var dataTable;
+﻿var dataTable;
 
 $(document).ready( function () {
     loadDataTable();
@@ -7,9 +6,10 @@ $(document).ready( function () {
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
+        "processing": true,
+        "serverSide": true,
         "ajax": {
-            "url": "/Admin/Vocabulary/GetAll",
-            "type": "POST",
+            "url": "/Admin/Vocabulary/GetAll",            
         },
         "columns": [
             { "data": "name", "width": "30%" },
