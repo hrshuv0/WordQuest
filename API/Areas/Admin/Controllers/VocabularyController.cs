@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Areas.Admin.Controllers;
@@ -6,6 +7,17 @@ namespace API.Areas.Admin.Controllers;
 [Area("Admin")]
 public class VocabularyController : Controller
 {
+    #region Init
+
+    private readonly IUnitOfWork _unitOfWork;
+
+    public VocabularyController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    #endregion
+    
     // GET
     public IActionResult Index()
     {
@@ -21,8 +33,19 @@ public class VocabularyController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult CreateEdit(Word model)
+    public async Task<IActionResult> CreateEdit(Word model)
     {
+        try
+        {
+            await _unitOfWork.VocabularyService.AddAsync(model);
+            await _unitOfWork.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
         return View(model);
     }
 }
