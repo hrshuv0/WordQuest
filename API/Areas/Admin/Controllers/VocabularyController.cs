@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using API.Helpers.Pagination;
+using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,4 +49,24 @@ public class VocabularyController : Controller
         }
         return View(model);
     }
+
+
+    #region API Calls
+
+    [HttpPost]
+    public async Task<IActionResult> GetAll([FromQuery] PaginationParams pagination)
+    {
+        IList<Word> result = new List<Word>();
+        
+        var total = 0;
+        var totalFiltered = 0;
+        var totalPages = 0;
+            
+        (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, null, null, null, pagination.PageNumber,
+            pagination.PageSize, false);
+        
+        return Json(new {data = result});
+    }
+
+    #endregion
 }
