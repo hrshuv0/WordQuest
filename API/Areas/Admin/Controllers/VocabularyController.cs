@@ -55,7 +55,7 @@ public class VocabularyController : BaseMvcController
 
     #region API Calls
 
-    
+    [HttpPost]
     public async Task<IActionResult> GetAll()
     {
         IList<Word> result = new List<Word>();
@@ -63,7 +63,7 @@ public class VocabularyController : BaseMvcController
         try
         {
             PaginationParams pagination = new(Request);
-            Expression<Func<Word, bool>> filter = null;
+            Expression<Func<Word, bool>> filter = null!;
         
             if(string.IsNullOrWhiteSpace(pagination.SearchText) == false)
                 filter = word => word.Name.Contains(pagination.SearchText);
@@ -73,7 +73,7 @@ public class VocabularyController : BaseMvcController
         }
         catch (Exception e)
         {
-            
+            // ignored
         }
 
         return Json(new {data = result});

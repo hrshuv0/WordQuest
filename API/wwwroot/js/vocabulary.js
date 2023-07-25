@@ -11,7 +11,8 @@ function loadDataTable() {
         "retrieve": true,
         "responsive": true,
         "ajax": {
-            "url": "/Admin/Vocabulary/GetAll",            
+            "url": "/Admin/Vocabulary/GetAll",
+            "type": "POST",         
         },
         "columns": [
             { "data": "id", "width": "30%" },
