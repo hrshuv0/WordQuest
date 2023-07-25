@@ -59,6 +59,9 @@ public class VocabularyController : BaseMvcController
     public async Task<IActionResult> GetAll()
     {
         IList<Word> result = new List<Word>();
+        var total = 0;
+        var totalFiltered = 0;
+        var totalPages = 0;
 
         try
         {
@@ -68,7 +71,7 @@ public class VocabularyController : BaseMvcController
             if(string.IsNullOrWhiteSpace(pagination.SearchText) == false)
                 filter = word => word.Name.Contains(pagination.SearchText);
         
-            (result, _, _, _) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, null, null, pagination.PageNumber,
+            (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, null, null, pagination.PageNumber,
                 pagination.PageSize, false);
         }
         catch (Exception e)
@@ -76,7 +79,12 @@ public class VocabularyController : BaseMvcController
             // ignored
         }
 
-        return Json(new {data = result});
+        return Json(new
+        {
+            recordsTotal = total,
+            recordsFiltered = totalFiltered,
+            data = result
+        });
     }
 
     #endregion
