@@ -75,7 +75,7 @@ public class VocabularyController : BaseMvcController
         }
         catch (Exception e)
         {
-            // ignored
+            _logger.LogError(string.Empty, e.Message);
         }
 
         return Json(new
