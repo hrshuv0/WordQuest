@@ -55,7 +55,6 @@ public class VocabularyController : BaseMvcController
 
     #region API Calls
 
-    [HttpPost]
     public async Task<IActionResult> GetAll()
     {
         IList<Word> result = new List<Word>();
