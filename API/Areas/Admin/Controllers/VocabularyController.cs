@@ -27,9 +27,20 @@ public class VocabularyController : BaseMvcController
         return View();
     }
 
-    public IActionResult CreateEdit()
+    public async Task<IActionResult> CreateEdit(long id = 0)
     {
         Word model = new();
+        try
+        {
+            if (id > 0)
+            {
+                model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+        }
 
         return View(model);
     }
@@ -40,9 +51,20 @@ public class VocabularyController : BaseMvcController
     {
         try
         {
-            await _unitOfWork.VocabularyService.AddAsync(model);
-            await _unitOfWork.SaveChangesAsync();
+            if (ModelState.IsValid == false)
+                throw new Exception("Model is not valid");
+
+            if (model.Id > 0)
+            {
+                await _unitOfWork.VocabularyService.UpdateAsync(model);
+            }
+            else
+            {
+                await _unitOfWork.VocabularyService.AddAsync(model);
+            }
             
+            await _unitOfWork.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
         catch (Exception e)
