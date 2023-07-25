@@ -45,9 +45,9 @@ public class UnitOfWork : IUnitOfWork
         throw new NotImplementedException();
     }
 
-    public Task SaveChangesAsync()
+    public async Task SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        await _dbContext.SaveChangesAsync();
     }
 
     public Task<bool> SaveAllAsync()

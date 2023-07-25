@@ -2,5 +2,5 @@
 
 public class Word : BaseEntity<long>
 {
-    public string? Name { get; set; }
+    public string Name { get; set; }
 }
