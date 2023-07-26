@@ -54,10 +54,10 @@ function loadDataTable() {
 
 function StatusUpdate(url)
 {
-    alert("Status Update Clicked");
+    toastr.info("Status Update Clicked");
 }
 
 function Delete(url)
 {
-    alert("Delete Clicked");
+    toastr.warning("Delete Clicked");
 }
