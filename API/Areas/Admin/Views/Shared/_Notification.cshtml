@@ -1,0 +1,61 @@
+﻿
+
+@{
+    if ((string)TempData["MessageTitle"]! == "Success")
+    {
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/notification/toastr/toastr.min.js"></script>
+        <script type="text/javascript">        
+            let progressBar = @(TempData["ShowProgressBar"]).toString() === "true";
+            let closeBtn = @(TempData["ShowCloseButton"]).toString() === "true";
+        
+            toastr.options.closeDuration = @TempData["DurationSecond"] * 1000;
+            toastr.options.progressBar = progressBar;
+            toastr.options.closeButton = closeBtn;
+            toastr.success('@TempData["Message"]');
+        </script>
+    }
+    if ((string)TempData["MessageTitle"]! == "Error")
+    {
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/notification/toastr/toastr.min.js"></script>
+        <script type="text/javascript">
+            let progressBar = @(TempData["ShowProgressBar"]).toString() === "true";
+            let closeBtn = @(TempData["ShowCloseButton"]).toString() === "true";
+        
+            toastr.options.closeDuration = @TempData["DurationSecond"] * 1000;
+            toastr.options.progressBar = progressBar;
+            toastr.options.closeButton = closeBtn;
+            toastr.error('@TempData["Message"]');
+        </script>
+    }
+    if ((string)TempData["MessageTitle"]! == "Info")
+    {
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/notification/toastr/toastr.min.js"></script>
+        <script type="text/javascript">
+            let progressBar = @(TempData["ShowProgressBar"]).toString() === "true";
+            let closeBtn = @(TempData["ShowCloseButton"]).toString() === "true";
+        
+            toastr.options.closeDuration = @TempData["DurationSecond"] * 1000;
+            toastr.options.progressBar = progressBar;
+            toastr.options.closeButton = closeBtn;
+            toastr.info('@TempData["Message"]');
+        </script>
+    }
+    if ((string)TempData["MessageTitle"]! == "Warning")
+    {
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/notification/toastr/toastr.min.js"></script>
+        <script type="text/javascript">
+            let progressBar = @(TempData["ShowProgressBar"]).toString() === "true";
+            let closeBtn = @(TempData["ShowCloseButton"]).toString() === "true";
+        
+            toastr.options.closeDuration = @TempData["DurationSecond"] * 1000;
+            toastr.options.progressBar = progressBar;
+            toastr.options.closeButton = closeBtn;
+            toastr.warning('@TempData["Message"]');
+        </script>
+    }
+}
+

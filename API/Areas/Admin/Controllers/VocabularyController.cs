@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using API.Controllers;
 using API.Helpers.Pagination;
+using Core.Common.Enums;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,20 @@ public class VocabularyController : BaseMvcController
         return View();
     }
 
-    public IActionResult CreateEdit()
+    public async Task<IActionResult> CreateEdit(long id = 0)
     {
         Word model = new();
+        try
+        {
+            if (id > 0)
+            {
+                model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+        }
 
         return View(model);
     }
@@ -38,17 +50,40 @@ public class VocabularyController : BaseMvcController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateEdit(Word model)
     {
+        var message = String.Empty;
+        
         try
         {
-            await _unitOfWork.VocabularyService.AddAsync(model);
-            await _unitOfWork.SaveChangesAsync();
+            if (ModelState.IsValid == false)
+                throw new InvalidDataException("Model is not valid");
+
+            if (model.Id > 0)
+            {
+                await _unitOfWork.VocabularyService.UpdateAsync(model);
+                message = "Updated successfully";
+            }
+            else
+            {
+                await _unitOfWork.VocabularyService.AddAsync(model);
+                message = "Created successfully";
+            }
             
+            await _unitOfWork.SaveChangesAsync();
+            ShowMessage(message, MessageType.Success);
+
             return RedirectToAction(nameof(Index));
+        }
+        catch(InvalidDataException e)
+        {
+            ShowMessage(e.Message, MessageType.Error);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            message = "Something went wrong";
+            ShowMessage(message, MessageType.Error);
+            _logger.LogError(e.Message);
         }
+        
         return View(model);
     }
 
@@ -57,6 +92,8 @@ public class VocabularyController : BaseMvcController
 
     public async Task<IActionResult> GetAll()
     {
+        var message = string.Empty;
+        
         IList<Word> result = new List<Word>();
         var total = 0;
         var totalFiltered = 0;
@@ -75,7 +112,9 @@ public class VocabularyController : BaseMvcController
         }
         catch (Exception e)
         {
-            // ignored
+            message = "Something went wrong";
+            ShowMessage(message, MessageType.Error);
+            _logger.LogError(string.Empty, e.Message);
         }
 
         return Json(new
