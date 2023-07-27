@@ -15,39 +15,46 @@ function loadDataTable() {
             "url": "/Admin/Vocabulary/GetAll",
         },
         "columns": [
-            { "data": "id", "width": "10%" },
-            { "data": "name", "width": "30%" },
-            { "data": "status", "width": "10%"},
+            { "data": "name", "width": "10%" },
+            { "data": "definition"},
+            { "data": "partOfSpeech"},
+            { "data": "pronunciation"},
+            { "data": "example"},
+            { "data": "translation"},
+            { "data": "difficultyLevel"},
+            { "data": "createdTime"},
+            { "data": "status",},
             { "data": "id",
                 "render": function (data) {
                 return `
-                    <div class="w-75 btn-group" role="group">
+                    <div class="w-50 btn-group" role="group">
                     <a href="/Admin/Vocabulary/CreateEdit?id=${data}"
                         class="btn btn-sm btn-outline-secondary m-2">
-                        <i class="bi bi-pencil-square"></i> Edit
+                        <i class="bi bi-pencil-square"></i>
                     </a>
                     <a onclick="StatusUpdate('/Admin/Vocabulary/StatusUpdate/${data}')"
                         class="btn btn-sm btn-outline-info m-2">
-                        <i class="bi bi-info-circle"></i> Status
+                        <i class="bi bi-info-circle"></i>
                     </a>
                     <a onclick="Delete('/Admin/Vocabulary/Delete/${data}')"
                         class="btn btn-sm btn-outline-danger m-2">
-                        <i class="bi bi-trash-fill"></i> Delete
+                        <i class="bi bi-trash-fill"></i>
                     </a>
                     
                     
                     </div>
                     `
                 },
-                "width": "30%"
+                "width": "20%"
             },
         ],
         "columnDefs": [
             { "className": "dt-head-center", "targets": "_all"},
-            { "className": "dt-body-center", "targets": [2, 3]},
+            { "className": "dt-body-center", "targets": [9]},
         ],
         "pagingType": 'numbers',
-        "ordering": false
+        "ordering": false,
+        "scrollX": true
         
     });
 }
