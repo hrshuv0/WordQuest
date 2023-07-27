@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Globalization;
+using System.Linq.Expressions;
 using API.Controllers;
 using API.Helpers.Pagination;
 using Core.Common;
@@ -132,7 +133,20 @@ public class VocabularyController : BaseMvcController
         {
             recordsTotal = total,
             recordsFiltered = totalFiltered,
-            data = result
+            data = (from record in result
+                select new string[]
+                {
+                    record.Name,
+                    record.Definition,
+                    record.PartOfSpeech,
+                    record.Pronunciation,
+                    record.Example,
+                    record.Translation,
+                    record.DifficultyLevel.ToString(),
+                    record.CreatedTime.ToString(CultureInfo.CurrentCulture),
+                    record.Status.ToString(),
+                    record.Id.ToString()
+                }).ToArray()
         });
     }
 
