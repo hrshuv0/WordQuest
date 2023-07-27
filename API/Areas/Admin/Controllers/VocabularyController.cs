@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using API.Controllers;
 using API.Helpers.Pagination;
+using Core.Common;
 using Core.Common.Enums;
 using Core.Entities;
 using Core.Interfaces;
@@ -54,8 +55,17 @@ public class VocabularyController : BaseMvcController
         
         try
         {
+            model.Name = model.Name!.TrimString();
+
             if (ModelState.IsValid == false)
-                throw new InvalidDataException("Model is not valid");
+            {
+                var errors = GetErrorMessage(ModelState);
+                throw new InvalidDataException(errors);
+            }
+                
+            var isExist = await _unitOfWork.VocabularyService.IsExistsAsync(x => string.Equals(x.Name!, model.Name!) && x.Id != model.Id);
+            if(isExist)
+                throw new InvalidDataException($"{model.Name} is already exist");
 
             if (model.Id > 0)
             {
