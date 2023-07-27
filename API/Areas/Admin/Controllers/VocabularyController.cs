@@ -113,11 +113,12 @@ public class VocabularyController : BaseMvcController
         {
             PaginationParams pagination = new(Request);
             Expression<Func<Word, bool>> filter = null!;
+            Func<IQueryable<Word>,IOrderedQueryable<Word>> orderBy = word => word.OrderBy(x => x.Name);
         
             if(string.IsNullOrWhiteSpace(pagination.SearchText) == false)
                 filter = word => word.Name.Contains(pagination.SearchText);
-        
-            (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, null, null, pagination.PageNumber,
+
+            (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, orderBy, null, pagination.PageNumber,
                 pagination.PageSize, false);
         }
         catch (Exception e)
