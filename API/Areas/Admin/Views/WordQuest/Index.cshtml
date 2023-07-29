@@ -6,14 +6,41 @@
 
 <div>
     <div class="pagetitle">
-          <h1>Dashboard</h1>
-          <nav>
+        <h1>Dashboard</h1>
+        <nav>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item"><a href="">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
             </ol>
-          </nav>
-        </div>
-    Words
+        </nav>
+    </div>
+    
+</div>
+
+<section class="section dashboard">
+<div class="row">
+
+  <div class="col-lg-8">
+    <div class="row">
+
+      <partial name="Partial/_NewUserCard" />
+
+      <partial name="Partial/_TotalUserCard"/>
+
+      <partial name="Partial/_LogErrorCard"/>
+
+    </div>
+  </div>
+  
+<div class="col-lg-4">
+  
+  <partial name="Partial/_RecentActivityCard"/>
+
+  <partial name="Partial/_WebsiteTrafficCard"/>
+
 
 </div>
+
+</div>
+
+</section>
