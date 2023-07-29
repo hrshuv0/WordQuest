@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Word Quest</title>
+    
+    <link rel="stylesheet" href="~/themes/assets/vendor/bootstrap/css/bootstrap.min.css"/>
+    
+    <link rel="stylesheet" href="~/onix/css/fontawesome.css"/>
+    <link rel="stylesheet" href="~/onix/css/templatemo-onix-digital.css"/>
+    <link rel="stylesheet" href="~/onix/css/animated.css"/>
+    <link rel="stylesheet" href="~/onix/css/owl.css"/>
+    
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+<partial name="_PreLoader"/>
+
+<partial name="UserPart/_Header"/>
+
+@RenderBody()
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/themes/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/onix/js/owl-carousel.js"></script>
+<script src="~/onix/js/animation.js"></script>
+<script src="~/onix/js/imagesloaded.js"></script>
+<script src="~/onix/js/custom.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

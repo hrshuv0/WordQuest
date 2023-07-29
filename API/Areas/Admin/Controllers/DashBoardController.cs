@@ -3,7 +3,7 @@
 namespace API.Areas.Admin.Controllers;
 
 [Area("admin")]
-public class WordQuestController : Controller
+public class DashBoardController : Controller
 {
     // GET
     public IActionResult Index()
