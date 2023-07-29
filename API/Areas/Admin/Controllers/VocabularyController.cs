@@ -129,6 +129,8 @@ public class VocabularyController : BaseMvcController
         
         return RedirectToAction(nameof(Index));
     }
+    
+    
 
     #region API Calls
 
@@ -178,6 +180,45 @@ public class VocabularyController : BaseMvcController
                     record.Status.GetActiveStatus(true),
                     record.Id.ToString()
                 }).ToArray()
+        });
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> StatusUpdate(long id)
+    {
+        var message = string.Empty;
+        bool isSuccess = false;
+        
+        try
+        {
+            var model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            if(model == null)
+                throw new InvalidDataException("Invalid data");
+                
+            model.Status = model.Status == Status.Active ? Status.InActive : Status.Active;
+            await _unitOfWork.VocabularyService.UpdateAsync(model);
+            await _unitOfWork.SaveChangesAsync();
+            
+            message = "Status updated successfully";
+            ShowMessage(message, MessageType.Success);
+            isSuccess = true;
+        }
+        catch(InvalidDataException e)
+        {
+            message = e.Message;
+            ShowMessage(message, MessageType.Error);
+        }
+        catch(Exception e)
+        {
+            message = "Something went wrong";
+            ShowMessage(message, MessageType.Error);
+            _logger.LogError(e.Message);
+        }
+        
+        return Json(new
+        {
+            isSuccess,
+            message
         });
     }
 

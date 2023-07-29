@@ -30,7 +30,7 @@ function loadDataTable() {
                         <button type="button" class="btn btn-sm btn-outline-info" onclick="window.location.href='/admin/Vocabulary/Details/${data}'" value='${data}'
                             data-bs-toggle="tooltip" title="Details"> <i class="bi bi-eye"></i> 
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="window.location.href='/admin/Vocabulary/StatusUpdate/${data}'" value='${data}'
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="StatusUpdate('/Admin/Vocabulary/StatusUpdate/${data}')" value='${data}'
                             data-bs-toggle="tooltip" title="Status Update"> <i class="bi bi-activity"></i> 
                         </button>
                         <button type="submit" class="btn btn-sm btn-outline-danger show-bs-modal" data-id='${data}' value='${data}'
@@ -52,7 +52,19 @@ function loadDataTable() {
 
 function StatusUpdate(url)
 {
-    toastr.info("Status Update Clicked");
+    $.ajax({
+        url:url,
+        type:'PUT',
+        success:function (data){
+            if(data.isSuccess){
+                dataTable.ajax.reload(null, false);
+                toastr.success(data.message);
+            }
+            else{
+                toastr.error(data.message);
+            }
+        }
+    });
 }
 
 $('#tblData').on('click', '.show-bs-modal', function (event) {
