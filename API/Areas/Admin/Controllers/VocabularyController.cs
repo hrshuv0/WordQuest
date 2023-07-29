@@ -97,6 +97,30 @@ public class VocabularyController : BaseMvcController
         
         return View(model);
     }
+    
+    public async Task<IActionResult> Details(long id)
+    {
+        try
+        {
+            var model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            
+            if(model == null)
+                throw new InvalidDataException("Not Found");
+                
+            return View(model);
+        }
+        catch (InvalidDataException e)
+        {
+            ShowMessage(e.Message, MessageType.Error);
+        }
+        catch (Exception e)
+        {
+            ShowMessage("Something went wrong", MessageType.Error);
+            _logger.LogError(e.Message);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
 
     [ValidateAntiForgeryToken, HttpPost]
     public async Task<IActionResult> Delete(long id)
