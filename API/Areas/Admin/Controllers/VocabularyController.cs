@@ -142,6 +142,7 @@ public class VocabularyController : BaseMvcController
         var total = 0;
         var totalFiltered = 0;
         var totalPages = 0;
+        var sl = 0;
 
         try
         {
@@ -154,6 +155,8 @@ public class VocabularyController : BaseMvcController
 
             (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, orderBy, null, pagination.PageNumber,
                 pagination.PageSize, false);
+                
+                
         }
         catch (Exception e)
         {
@@ -162,6 +165,7 @@ public class VocabularyController : BaseMvcController
             _logger.LogError(string.Empty, e.Message);
         }
 
+        
         return Json(new
         {
             recordsTotal = total,
@@ -169,6 +173,7 @@ public class VocabularyController : BaseMvcController
             data = (from record in result
                 select new string[]
                 {
+                    (++sl).ToString(),
                     record.Name,
                     record.Definition,
                     record.PartOfSpeech,

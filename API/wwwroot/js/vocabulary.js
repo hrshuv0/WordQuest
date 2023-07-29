@@ -17,10 +17,9 @@ function loadDataTable() {
         "columnDefs": [
             { "className": "dt-head-center", "targets": "_all"},
             { "className": "dt-body-center", "targets": [9]},
-            { "targets": 7, width: "15%" },
+            // { "targets": 0, width: "15%" },
             {
-                "targets": 9,
-                "width": "15%",
+                "targets": 10,
                 "orderable": false,
                 "render": function (data, type, row) {
                     return `
@@ -45,7 +44,8 @@ function loadDataTable() {
         ],
         // "pagingType": 'numbers',
         // "ordering": false,
-        "scrollX": true
+        "scrollX": true,
+        "autoWidth": true
         
     });
 }
