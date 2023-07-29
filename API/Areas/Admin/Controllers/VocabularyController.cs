@@ -175,7 +175,7 @@ public class VocabularyController : BaseMvcController
                     record.Translation,
                     record.DifficultyLevel.ToString(),
                     record.CreatedTime.ToString(CultureInfo.CurrentCulture),
-                    record.Status.ToString(),
+                    record.Status == Status.Active ? "<p class=\"text-success\">Active</p>": "<p class=\"text-danger\">Inactive</p>",
                     record.Id.ToString()
                 }).ToArray()
         });
