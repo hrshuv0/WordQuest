@@ -46,7 +46,15 @@ function StatusUpdate(url)
     toastr.info("Status Update Clicked");
 }
 
-function Delete(url)
-{
-    toastr.warning("Delete Clicked");
-}
+$('#tblData').on('click', '.show-bs-modal', function (event) {
+    var id = $(this).data("id");
+    var modal = $("#modal-default");
+    modal.find('.modal-body p').text('Are you sure you want to delete this record?');
+    $("#deleteId").val(id);
+    $("#deleteForm").attr("action", "/Admin/Vocabulary/Delete");
+    modal.modal('show');
+});
+$("#deleteButton").click(function () {
+    $("#deleteForm").submit();
+});
+    

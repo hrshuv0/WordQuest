@@ -98,6 +98,37 @@ public class VocabularyController : BaseMvcController
         return View(model);
     }
 
+    [ValidateAntiForgeryToken, HttpPost]
+    public async Task<IActionResult> Delete(long id)
+    {
+        var message = string.Empty;
+        
+        try
+        {
+            var model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            
+            if(model == null)
+                throw new InvalidDataException("Invalid data");
+                
+            await _unitOfWork.VocabularyService.DeleteAsync(model);
+            await _unitOfWork.SaveChangesAsync();
+            
+            message = $"{model.Name} Deleted successfully";
+            ShowMessage(message, MessageType.Info);
+        }
+        catch(InvalidDataException e)
+        {
+            ShowMessage(e.Message, MessageType.Error);
+        }
+        catch(Exception e)
+        {
+            message = "Something went wrong";
+            ShowMessage(message, MessageType.Error);
+            _logger.LogError(e.Message);
+        }
+        
+        return RedirectToAction(nameof(Index));
+    }
 
     #region API Calls
 
