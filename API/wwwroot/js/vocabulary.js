@@ -24,12 +24,21 @@ function loadDataTable() {
                 "orderable": false,
                 "render": function (data, type, row) {
                     return `
-                        <button type="submit" class="btn btn-sm btn-outline-info" onclick="window.location.href='/admin/Vocabulary/CreateEdit/${data}'" value='${data}'>
-                            <i class="bi bi-pencil-square"></i> Edit
+                        <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="window.location.href='/admin/Vocabulary/CreateEdit/${data}'" value='${data}'
+                             data-bs-toggle="tooltip" title="Edit"> <i class="bi bi-pencil-square"></i>
                         </button>
-                        <button type="submit" class="btn btn-sm btn-outline-danger show-bs-modal" data-id='${data}' value='${data}'>
-                            <i class="bi bi-trash"></i> Delete
+                        <button type="button" class="btn btn-sm btn-outline-info" onclick="window.location.href='/admin/Vocabulary/Details/${data}'" value='${data}'
+                            data-bs-toggle="tooltip" title="Details"> <i class="bi bi-eye"></i> 
                         </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="window.location.href='/admin/Vocabulary/StatusUpdate/${data}'" value='${data}'
+                            data-bs-toggle="tooltip" title="Status Update"> <i class="bi bi-activity"></i> 
+                        </button>
+                        <button type="submit" class="btn btn-sm btn-outline-danger show-bs-modal" data-id='${data}' value='${data}'
+                            data-bs-toggle="tooltip" title="Delete"> <i class="bi bi-trash"></i>
+                        </button>
+                        
+
+                        
                     `;
                 }
             }
