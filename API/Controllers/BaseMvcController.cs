@@ -1,5 +1,6 @@
 ﻿using Core.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace API.Controllers;
 
@@ -40,5 +41,28 @@ public class BaseMvcController : Controller
     }
     
 
+    #endregion
+
+    #region MVC Error Message
+    protected static string GetAllErrorMessage(ModelStateDictionary modelState)
+    {
+        var message = string.Empty;
+        foreach (var state in modelState)
+        {
+            foreach (var error in state.Value.Errors)
+            {
+                message += error.ErrorMessage + Environment.NewLine;
+            }
+        }
+
+        return message;
+    }
+    
+    protected static string GetErrorMessage(ModelStateDictionary modelState)
+    {
+        var message = modelState.Values.SelectMany(v => v.Errors).FirstOrDefault()!.ErrorMessage;
+        
+        return message;
+    }
     #endregion
 }

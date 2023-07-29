@@ -1,4 +1,4 @@
-﻿
+
 @{
     Layout = "_AdminLayout";
 }
@@ -33,10 +33,17 @@
           <table class="table table-striped table-hover" id="tblData">
             <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
+              <th>Sl</th>
+              <th width="200px">Name</th>
+              <th width="250px">Definition</th>
+              <th width="150px">POP</th>
+              <th width="70px">Pronunciation</th>
+              <th width="300px">Example</th>
+              <th width="150px">Translation</th>
+              <th>Difficulty</th>
+              <th width="200px">Time</th>
               <th>Status</th>
-              <th>Action</th>
+              <th width="150px">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -54,6 +61,7 @@
   </div>
 </section>
 
+<partial name="_ModalPartial"/>
 
 @section Scripts
 {

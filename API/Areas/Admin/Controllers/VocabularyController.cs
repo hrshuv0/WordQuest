@@ -1,6 +1,8 @@
-﻿using System.Linq.Expressions;
+﻿using System.Globalization;
+using System.Linq.Expressions;
 using API.Controllers;
 using API.Helpers.Pagination;
+using Core.Common;
 using Core.Common.Enums;
 using Core.Entities;
 using Core.Interfaces;
@@ -54,8 +56,17 @@ public class VocabularyController : BaseMvcController
         
         try
         {
+            model.Name = model.Name!.TrimString();
+
             if (ModelState.IsValid == false)
-                throw new InvalidDataException("Model is not valid");
+            {
+                var errors = GetErrorMessage(ModelState);
+                throw new InvalidDataException(errors);
+            }
+                
+            var isExist = await _unitOfWork.VocabularyService.IsExistsAsync(x => string.Equals(x.Name!, model.Name!) && x.Id != model.Id);
+            if(isExist)
+                throw new InvalidDataException($"{model.Name} is already exist");
 
             if (model.Id > 0)
             {
@@ -86,7 +97,64 @@ public class VocabularyController : BaseMvcController
         
         return View(model);
     }
+    
+    public async Task<IActionResult> Details(long id)
+    {
+        try
+        {
+            var model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            
+            if(model == null)
+                throw new InvalidDataException("Not Found");
+                
+            return View(model);
+        }
+        catch (InvalidDataException e)
+        {
+            ShowMessage(e.Message, MessageType.Error);
+        }
+        catch (Exception e)
+        {
+            ShowMessage("Something went wrong", MessageType.Error);
+            _logger.LogError(e.Message);
+        }
 
+        return RedirectToAction(nameof(Index));
+    }
+
+    [ValidateAntiForgeryToken, HttpPost]
+    public async Task<IActionResult> Delete(long id)
+    {
+        var message = string.Empty;
+        
+        try
+        {
+            var model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            
+            if(model == null)
+                throw new InvalidDataException("Invalid data");
+                
+            await _unitOfWork.VocabularyService.DeleteAsync(model);
+            await _unitOfWork.SaveChangesAsync();
+            
+            message = $"{model.Name} Deleted successfully";
+            ShowMessage(message, MessageType.Info);
+        }
+        catch(InvalidDataException e)
+        {
+            ShowMessage(e.Message, MessageType.Error);
+        }
+        catch(Exception e)
+        {
+            message = "Something went wrong";
+            ShowMessage(message, MessageType.Error);
+            _logger.LogError(e.Message);
+        }
+        
+        return RedirectToAction(nameof(Index));
+    }
+    
+    
 
     #region API Calls
 
@@ -98,17 +166,21 @@ public class VocabularyController : BaseMvcController
         var total = 0;
         var totalFiltered = 0;
         var totalPages = 0;
+        var sl = 0;
 
         try
         {
             PaginationParams pagination = new(Request);
             Expression<Func<Word, bool>> filter = null!;
+            Func<IQueryable<Word>,IOrderedQueryable<Word>> orderBy = word => word.OrderBy(x => x.Name);
         
             if(string.IsNullOrWhiteSpace(pagination.SearchText) == false)
                 filter = word => word.Name.Contains(pagination.SearchText);
-        
-            (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, null, null, pagination.PageNumber,
+
+            (result, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(v => v, filter, orderBy, null, pagination.PageNumber,
                 pagination.PageSize, false);
+                
+                
         }
         catch (Exception e)
         {
@@ -117,11 +189,65 @@ public class VocabularyController : BaseMvcController
             _logger.LogError(string.Empty, e.Message);
         }
 
+        
         return Json(new
         {
             recordsTotal = total,
             recordsFiltered = totalFiltered,
-            data = result
+            data = (from record in result
+                select new string[]
+                {
+                    (++sl).ToString(),
+                    record.Name,
+                    record.Definition,
+                    record.PartOfSpeech,
+                    record.Pronunciation,
+                    record.Example,
+                    record.Translation,
+                    record.DifficultyLevel.ToString(),
+                    record.CreatedTime.ToString(CultureInfo.CurrentCulture),
+                    record.Status.GetActiveStatus(true),
+                    record.Id.ToString()
+                }).ToArray()
+        });
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> StatusUpdate(long id)
+    {
+        var message = string.Empty;
+        bool isSuccess = false;
+        
+        try
+        {
+            var model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+            if(model == null)
+                throw new InvalidDataException("Invalid data");
+                
+            model.Status = model.Status == Status.Active ? Status.InActive : Status.Active;
+            await _unitOfWork.VocabularyService.UpdateAsync(model);
+            await _unitOfWork.SaveChangesAsync();
+            
+            message = "Status updated successfully";
+            ShowMessage(message, MessageType.Success);
+            isSuccess = true;
+        }
+        catch(InvalidDataException e)
+        {
+            message = e.Message;
+            ShowMessage(message, MessageType.Error);
+        }
+        catch(Exception e)
+        {
+            message = "Something went wrong";
+            ShowMessage(message, MessageType.Error);
+            _logger.LogError(e.Message);
+        }
+        
+        return Json(new
+        {
+            isSuccess,
+            message
         });
     }
 
