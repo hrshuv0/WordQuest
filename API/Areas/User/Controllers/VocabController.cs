@@ -19,23 +19,10 @@ public class VocabController : BaseMvcController
     }
 
     // GET
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        IList<Word> wordList = new List<Word>();
 
-        try
-        {
-            (wordList, _, _, _) = await _unitOfWork.VocabularyService.LoadAsync(c => c);
-            wordList.Shuffle();
-            
-        }
-        catch (Exception e)
-        {
-            ShowMessage("Something went wrong. Please try again later.", MessageType.Error);
-            _logger.LogError(e.Message);
-        }
-
-        return View(wordList);
+        return View();
     }
 
 
@@ -44,18 +31,23 @@ public class VocabController : BaseMvcController
     
     public async Task<IActionResult> GetRandomWord()
     {
+        var isSuccess = false;
         var word = new Word();
 
         try
         {
             word = await _unitOfWork.VocabularyService.GetRandomWord();
+            ViewBag.Word = word;
+            
+            isSuccess = true;
+            return PartialView("Partial/_RandomWordPartial", word);
         }
         catch (Exception e)
         {
             _logger.LogError(e.Message);
         }
 
-        return new JsonResult(word);
+        return new JsonResult(isSuccess);
     }
 
     #endregion
