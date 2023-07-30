@@ -37,4 +37,26 @@ public class VocabController : BaseMvcController
 
         return View(wordList);
     }
+
+
+    #region API Calls
+
+    
+    public async Task<IActionResult> GetRandomWord()
+    {
+        var word = new Word();
+
+        try
+        {
+            word = await _unitOfWork.VocabularyService.GetRandomWord();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+        }
+
+        return new JsonResult(word);
+    }
+
+    #endregion
 }

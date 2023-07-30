@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.Common;
+using Core.Entities;
 using Core.Repositories;
 using Core.Services;
 
@@ -31,8 +32,22 @@ public class VocabularyService : BaseService<Word, long>, IVocabularyService
         }
         
     }
-    
-    
+
+    public async Task<Word> GetRandomWord()
+    {
+        try
+        {
+            var (wordList, _, _, _) = await _entityRepository.LoadAsync(c => c);
+            wordList.Shuffle();
+            
+            return wordList.FirstOrDefault()!;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+
     #endregion
     
 }
