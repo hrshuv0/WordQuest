@@ -1,10 +1,25 @@
-﻿
+﻿@model IList<Word>
 
 @{
     Layout = "_Layout";
+    ViewBag.Title = "Vocab";
+    
+    IList<Word> words = Model;
+
 }
 
 
 <div class="container">
-    dsd
+    
+    @if (words.Count > 0)
+    {
+        Word word = words[0];
+        
+        <div>
+            <h1>@word.Name</h1>
+            <p>@word.Definition</p>
+
+        </div>
+    }
+    
 </div>
