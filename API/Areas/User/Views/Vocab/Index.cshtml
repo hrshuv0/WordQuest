@@ -1,0 +1,57 @@
+﻿
+
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Vocab";
+
+}
+
+
+<div class="container">
+    
+    <div id="wordContainer">
+        
+    </div>
+    
+    <form class="d-flex justify-content-center">
+        <div class="main-red-button-hover mt-5">
+            <a id="btnNext" class="mx-100">Next</a>
+        </div>
+    
+    </form>
+
+    
+
+
+</div>
+
+
+@section Scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            LoadRandomWord();
+        });    
+    </script>
+
+    <script type="text/javascript">
+        $("#btnNext").on("click", function (e) {
+            e.preventDefault();
+            LoadRandomWord();
+        });
+        
+    </script>
+
+    <script>
+        function LoadRandomWord() {
+            $.ajax({
+                url: "/User/Vocab/GetRandomWord",
+                type: "GET",
+                success: function (data) {
+                    $("#wordContainer").html(data);
+                }
+            });
+        }
+    </script>
+}

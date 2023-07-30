@@ -4,5 +4,5 @@ namespace Core.Services;
 
 public interface IVocabularyService : IBaseService<Word, long>
 {
-    
+    Task<Word> GetRandomWord();
 }

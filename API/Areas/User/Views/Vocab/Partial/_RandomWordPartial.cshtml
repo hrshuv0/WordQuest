@@ -1,0 +1,63 @@
+﻿@model Word
+
+@{
+    Word word = Model;
+}
+
+<div class="d-flex justify-content-center mt-5">
+    <div class=" w-50">
+        <div class="row text-center">
+            <h1>@word.Name</h1>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-4">
+                <label>Definition</label>
+            </div>
+            <div class="col-8">
+                <p>@word.Definition</p>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-4">
+                <label>Pronunciation</label>
+            </div>
+            <div class="col-8">
+                <p>@word.Pronunciation</p>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-4">
+                <label>Part Of Speech</label>
+            </div>
+            <div class="col-8">
+                <p>@word.PartOfSpeech</p>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-4">
+                <label>Translation</label>
+            </div>
+            <div class="col-8">
+                <p>@word.Translation</p>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-4">
+                <label>Example</label>
+            </div>
+            <div class="col-8">
+                <p>@word.Example</p>
+            </div>
+        </div>
+        
+
+    </div>
+    
+
+</div>
+
