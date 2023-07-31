@@ -36,8 +36,14 @@ public class WordQuestController : BaseApiController
             (wordList, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(c => c);
             wordList.Shuffle();
             
-            Response.AddPagination(pagination.PageNumber, pagination.PageSize, total, totalFiltered, totalPages);
-            return Ok(wordList);
+            //Response.AddPagination(pagination.PageNumber, pagination.PageSize, total, totalFiltered, totalPages);
+            return Ok(new
+            {
+                total,
+                totalFiltered,
+                totalPages,
+                data = wordList
+            });
         }
         catch (Exception e)
         {
