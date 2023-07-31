@@ -19,7 +19,7 @@ public class WordQuestController : BaseApiController
 
     #endregion
     
-    // GET
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         IList<Word> wordList = new List<Word>();
