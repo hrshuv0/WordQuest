@@ -15,4 +15,6 @@ public class Word : BaseEntity<long>
     public int DifficultyLevel { get; set; }
     public int CorrectAnswer { get; set; }
     public int WrongAnswer { get; set; }
+    
+    public List<WordQuest>? WordQuestList { get; set; }
 }

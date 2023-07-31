@@ -21,5 +21,7 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<Word>? Words { get; set; }
+    public DbSet<WordOption>? WordOptions { get; set; }
+    public DbSet<WordQuest>? WordQuests { get; set; }
     public DbSet<ApplicationUser>? ApplicationUser { get; set; }
 }
