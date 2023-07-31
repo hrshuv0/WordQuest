@@ -1,6 +1,10 @@
 ﻿using System.Text;
 using Core.Entities.Identity;
+using Core.Repositories;
+using Core.Services;
 using Infrastructure.Data;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +16,9 @@ public static class IdentityServiceExtension
 {
     public static async Task AddIdentityServices(this IServiceCollection services, IConfiguration config)
     {
+        services.AddScoped<IAuthRepository, AuthRepository>();
+        services.AddScoped<IAuthService, AuthService>();
+        
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         {
             // Password configuration
