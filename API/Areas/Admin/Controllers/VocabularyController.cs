@@ -170,7 +170,7 @@ public class VocabularyController : BaseMvcController
 
         try
         {
-            PaginationParams pagination = new(Request);
+            PaginationParamsAjax pagination = new(Request);
             Expression<Func<Word, bool>> filter = null!;
             Func<IQueryable<Word>,IOrderedQueryable<Word>> orderBy = word => word.OrderBy(x => x.Name);
         
