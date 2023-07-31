@@ -12,6 +12,8 @@ public class MappingProfiles : Profile
         CreateMap<ApplicationUser, UserDetailsDto>();
         
         CreateMap<ApplicationUser, UserDetailsForReturnDto>();
+        
+        CreateMap<ApplicationUser, UserListDto>();
 
     }
 }
