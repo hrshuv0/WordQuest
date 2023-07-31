@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+using API.Helpers;
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ public static class ApplicationServiceExtensions
 
         #endregion
 
+        services.AddAutoMapper(typeof(MappingProfiles));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();

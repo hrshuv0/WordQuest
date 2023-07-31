@@ -14,11 +14,13 @@ public class UnitOfWork : IUnitOfWork
 
     #region Repository
     public IVocabularyRepository VocabularyRepository { get; }
+    public IUserRepository UserRepository { get; }
 
     #endregion
 
     #region Service
     public IVocabularyService VocabularyService { get; }
+    public IUserService UserService { get; }
 
     #endregion
     
@@ -28,9 +30,11 @@ public class UnitOfWork : IUnitOfWork
 
         #region Repo
         VocabularyRepository = new VocabularyRepository(dbContext);
+        UserRepository = new UserRepository(dbContext);
         #endregion
 
         VocabularyService = new VocabularyService(VocabularyRepository);
+        UserService = new UserService(UserRepository);
     }
 
     #region Helper

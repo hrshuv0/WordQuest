@@ -1,4 +1,6 @@
-﻿using Core.Common;
+﻿using API.Helpers;
+using API.Helpers.Pagination;
+using Core.Common;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,23 +21,35 @@ public class WordQuestController : BaseApiController
 
     #endregion
     
-    // GET
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public async Task<IActionResult> Index([FromQuery] PaginationParams pagination)
     {
         IList<Word> wordList = new List<Word>();
         Word word = new Word();
 
         try
         {
-            (wordList, _, _, _) = await _unitOfWork.VocabularyService.LoadAsync(c => c);
+            var total = 0;
+            var totalFiltered = 0;
+            var totalPages = 0;
+            
+            (wordList, total, totalFiltered, totalPages) = await _unitOfWork.VocabularyService.LoadAsync(c => c);
             wordList.Shuffle();
             
-            word = wordList.FirstOrDefault()!;
+            //Response.AddPagination(pagination.PageNumber, pagination.PageSize, total, totalFiltered, totalPages);
+            return Ok(new
+            {
+                total,
+                totalFiltered,
+                totalPages,
+                data = wordList
+            });
         }
         catch (Exception e)
         {
             _logger.LogError(e.Message);
         }
-        return Ok(word);
+        
+        return BadRequest("Failed To Load Word.");
     }
 }

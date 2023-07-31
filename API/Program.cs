@@ -11,7 +11,7 @@ builder.Services.AddMvc().AddJsonOptions(opt =>
     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
-
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -19,6 +19,8 @@ builder.Services.AddSwaggerGen();
 
 var config = builder.Configuration;
 await builder.Services.AddApplicationServices(config);
+await builder.Services.AddIdentityServices(config);
+
 
 var app = builder.Build();
 

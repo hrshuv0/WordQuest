@@ -9,12 +9,14 @@ public interface IUnitOfWork : IDisposable
     #region Repository
 
     IVocabularyRepository VocabularyRepository { get; }
+    IUserRepository UserRepository { get; }
 
     #endregion
 
     #region Service
 
     IVocabularyService VocabularyService { get; }
+    IUserService UserService { get; }
 
     #endregion
 
