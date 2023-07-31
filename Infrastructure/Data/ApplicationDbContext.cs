@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Core.Entities;
+using Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,4 +21,5 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<Word>? Words { get; set; }
+    public DbSet<ApplicationUser>? ApplicationUser { get; set; }
 }
