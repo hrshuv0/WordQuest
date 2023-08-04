@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Core.Repositories;
 
@@ -54,6 +55,12 @@ public interface IBaseRepository<TEntity, TKey> where TEntity : IBaseEntity<TKey
 
     (IList<TEntity> Items, int Total, int TotalFilter) GetFromSql(string sql,
         IList<(string Key, object Value, bool IsOut)> parameters, bool isStoredProcedure = true);
+
+    #endregion
+
+    #region Database
+
+    Task<IDbContextTransaction> BeginTransactionAsync();
 
     #endregion
 }

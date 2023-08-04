@@ -18,6 +18,31 @@ public class VocabularyService : BaseService<Word, long>, IVocabularyService
     #endregion
     
     #region METHODS
+
+    #region OVERRIDE
+
+    public override async Task AddAsync(Word entity)
+    {
+        await using var transaction = await _entityRepository.BeginTransactionAsync();
+        try
+        {
+            await base.AddAsync(entity);
+            
+            await transaction.CommitAsync();
+        }
+        catch (Core.Common.Exceptions.InvalidDataException e)
+        {
+            await transaction.RollbackAsync();
+            throw new Core.Common.Exceptions.InvalidDataException(e.Message);
+        }
+        catch (Exception e)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception(e.Message);
+        }
+    }
+
+    #endregion
     
     public override Task UpdateAsync(Word entity)
     {

@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Core.Services;
 
@@ -41,4 +42,10 @@ public interface IBaseService<TEntity, TKey> where TEntity : IBaseEntity<TKey>
 
     #endregion
 
+    #region Database
+
+    Task<IDbContextTransaction> BeginTransactionAsync();
+
+
+    #endregion
 }

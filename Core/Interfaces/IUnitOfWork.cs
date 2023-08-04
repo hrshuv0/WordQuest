@@ -21,9 +21,8 @@ public interface IUnitOfWork : IDisposable
     #endregion
 
     void SaveChanges();
-    public IDbContextTransaction BeginTransaction();
 
     Task SaveChangesAsync();
     Task<bool> SaveAllAsync();
-    public Task<IDbContextTransaction> BeginTransactionAsync();
+    Task<IDbContextTransaction> BeginTransactionAsync();
 }

@@ -2,8 +2,10 @@
 using Core.Entities;
 using Core.Repositories;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Repositories;
 
@@ -205,6 +207,14 @@ public abstract class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, T
     }
 
     
+
+    #endregion
+
+    #region Database
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await _dbContext.Database.BeginTransactionAsync();
+    }
 
     #endregion
     

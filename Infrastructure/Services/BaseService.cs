@@ -3,6 +3,7 @@ using Core.Entities;
 using Core.Repositories;
 using Core.Services;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Services;
 
@@ -100,7 +101,7 @@ public class BaseService<TEntity, TKey> : IBaseService<TEntity, TKey>
         }
     }
 
-    public Task AddAsync(TEntity entity)
+    public virtual Task AddAsync(TEntity entity)
     {
         try
         {
@@ -181,6 +182,15 @@ public class BaseService<TEntity, TKey> : IBaseService<TEntity, TKey>
     {
         throw new NotImplementedException();
     }
+
+    #endregion
+
+    #region Database
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await _entityRepository.BeginTransactionAsync();
+    }
     
+
     #endregion
 }

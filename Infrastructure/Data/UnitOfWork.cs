@@ -43,25 +43,21 @@ public class UnitOfWork : IUnitOfWork
     {
         _dbContext.SaveChanges();
     }
-
-    public IDbContextTransaction BeginTransaction()
-    {
-        throw new NotImplementedException();
-    }
+    
 
     public async Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();
     }
 
-    public Task<bool> SaveAllAsync()
+    public async Task<bool> SaveAllAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.SaveChangesAsync() > 0;
     }
 
-    public Task<IDbContextTransaction> BeginTransactionAsync()
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Database.BeginTransactionAsync();
     }
     #endregion
 
