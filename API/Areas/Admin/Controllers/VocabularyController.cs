@@ -7,6 +7,8 @@ using Core.Common.Enums;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace API.Areas.Admin.Controllers;
 
@@ -37,7 +39,14 @@ public class VocabularyController : BaseMvcController
         {
             if (id > 0)
             {
-                model = await _unitOfWork.VocabularyService.GetByIdAsync(id);
+                Expression<Func<Word, bool>> query = c => c.Id == id;
+                Func<IQueryable<Word>, IIncludableQueryable<Word, object>> include = c => c.Include(x => x.WordQuestList!).ThenInclude(x => x.WordOption!);
+                model = await _unitOfWork.VocabularyService.GetFirstOrDefaultAsync(c => c, query, include);
+            }
+            
+            if(model.WordQuestList == null || model.WordQuestList.Count == 0)
+            {
+                model.WordQuestList = new List<WordQuest>() { new(), new(), new(), new(), new() };
             }
         }
         catch (Exception e)

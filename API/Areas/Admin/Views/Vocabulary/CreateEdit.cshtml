@@ -81,17 +81,19 @@
                 @for (var i = 0; i < 5; i++)
                 {
                   var idx = i;
-                  Model.WordQuestList![idx].WordId = Model.Id;
+                  
+                  <input asp-for="WordQuestList![idx].WordId" hidden="hidden"/>
+                  <input asp-for="WordQuestList![idx].WordOptionId" hidden="hidden"/>
 
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label text-end">Option @(i+1)</label>
                     <div class="col-sm-7">
 
                       
-                      <input asp-for="WordQuestList![idx].WordOption.Name" type="text" class="form-control">
+                      <input asp-for="WordQuestList![idx].WordOption!.Name" type="text" class="form-control">
                     </div>
                     <div class="col-sm-2">
-                      <input asp-for="WordQuestList![idx].WordOption.IsCorrect" type="checkbox" class="form-check-input"/>
+                      <input asp-for="WordQuestList![idx].WordOption!.IsCorrect" type="checkbox" class="form-check-input"/>
                     </div>
                   </div>
                 }

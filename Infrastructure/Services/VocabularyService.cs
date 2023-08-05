@@ -1,4 +1,4 @@
-﻿using Core.Common;
+using Core.Common;
 using Core.Entities;
 using Core.Repositories;
 using Core.Services;
@@ -41,22 +41,31 @@ public class VocabularyService : BaseService<Word, long>, IVocabularyService
             throw new Exception(e.Message);
         }
     }
-
-    #endregion
     
-    public override Task UpdateAsync(Word entity)
+    public override async Task UpdateAsync(Word model)
     {
+        await using var transaction = await _entityRepository.BeginTransactionAsync();
+        
         try
         {
+            var entity = model;
+            
             entity.UpdatedTime = DateTime.Now;
-            return base.UpdateAsync(entity);
+           
+            
+            await base.UpdateAsync(entity);
+            
+            await transaction.CommitAsync();
         }
         catch (Exception e)
         {
+            await transaction.RollbackAsync();
             throw new Exception(e.Message);
         }
         
     }
+
+    #endregion
 
     public async Task<Word> GetRandomWord()
     {
